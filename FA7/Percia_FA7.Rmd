@@ -1,0 +1,133 @@
+---
+title: "Percia_FA7"
+output: html_document
+date: "2024-03-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Number 1
+
+In Example 16.3 with γ = 4 per minute, use R to obtain:
+
+(a) P(T≤ 0.25) = P(time between submissions is at most 15 seconds);
+(b) P(T > 0.5) = P(time between submissions is greater than 30 seconds); 
+(c) P(0.25 <T< 1) = P(time between submissions is between 15 seconds and 1 minute).
+
+```{r}
+# Rate parameter (events per minute)
+gamma <- 4
+
+# (a) P(T ≤ 0.25) = P(time between submissions is at most 15 seconds)
+prob_a <- pexp(0.25, rate = gamma/60)  # Convert gamma to events per second
+cat("Probability (a):", prob_a, "\n")
+
+# (b) P(T > 0.5) = P(time between submissions is greater than 30 seconds)
+prob_b <- 1 - pexp(0.5, rate = gamma/60)  # Convert gamma to events per second
+cat("Probability (b):", prob_b, "\n")
+
+# (c) P(0.25 < T < 1) = P(time between submissions is between 15 seconds and 1 minute)
+prob_c <- pexp(1, rate = gamma/60) - pexp(0.25, rate = gamma/60)  # Convert gamma to events per second
+cat("Probability (c):", prob_c, "\n")
+```
+
+### Interpretation:
+
+  * For part (a), we directly use the pexp() function to calculate the probability that the time between submissions is at most 15 seconds.
+  * For part (b), we subtract the probability of the time between submissions being less than or equal to 30 seconds from 1 to get the probability that it's greater than 30 seconds.
+  * For part (c), we subtract the probability of the time between submissions being at most 15 seconds from the probability of it being at most 1 minute to get the probability that it's between 15 seconds and 1 minute.
+  
+
+## Number 3
+
+The average rate of job submissions in a computer center is 2 per minute. If it can be assumed that the number of submissions per minute has a Poisson distribution, calculate the probability that:
+
+(a) more than two jobs will arrive in a minute;
+(b) at least 30 seconds will elapse between any two jobs;
+(c) less than 30 seconds will elapse between jobs;
+(d) a job will arrive in the next 30 seconds, if no jobs have arrived in the last 30 seconds.
+
+```{r}
+## NUMBER 3
+
+# Load the stats package for Poisson distribution functions
+library(stats)
+
+# Average rate of job submissions (λ)
+lambda <- 2
+
+# (a) Probability that more than two jobs will arrive in a minute
+prob_a <- 1 - ppois(2, lambda)
+cat("Probability (a):", prob_a, "\n")
+
+# (b) Probability that at least 30 seconds will elapse between any two jobs
+# Convert 30 seconds to a fraction of a minute
+time_30_seconds <- 30 / 60
+prob_b <- ppois(0, lambda * time_30_seconds)
+cat("Probability (b):", prob_b, "\n")
+
+# (c) Probability that less than 30 seconds will elapse between jobs
+prob_c <- 1 - prob_b
+cat("Probability (c):", prob_c, "\n")
+
+# (d) Probability that a job will arrive in the next 30 seconds
+prob_d <- 1 - ppois(0, lambda * time_30_seconds)
+cat("Probability (d):", prob_d, "\n")
+
+```
+
+### Interpretation
+
+  * For part (a), we use the ppois() function to calculate the probability that two or fewer jobs will arrive in a minute, and then subtract this probability from 1 to get the probability that more than two jobs will arrive.
+  * For part (b), we calculate the probability that no jobs will arrive in the next 30 seconds using the Poisson distribution with a rate of λ * (30/60), where 30/60 represents 30 seconds as a fraction of a minute.
+  * For part (c), we subtract the probability calculated in part (b) from 1 to get the probability that less than 30 seconds will elapse between jobs.
+  * For part (d), we use the same calculation as in part (b) to find the probability that no jobs will arrive in the next 30 seconds, and then subtract this probability from 1 to get the probability that a job will arrive in the next 30 seconds.
+  
+
+## Number 7
+
+A website receives an average of 15 visits per hour, which arrive following a Poisson distribution.
+
+(a) Calculate the probability that at least 10 minutes will elapse without a visit.
+(b) What is the probability that in any hour, there will be less than eight visits? 
+(c) Suppose that 15 minutes have elapsed since the last visit, what is the prob- ability that a visit will occur in the next 15 minutes.
+(d) Calculate the top quartile, and explain what it means.
+
+```{r}
+## NUMBER 7
+
+# Load the stats package for Poisson distribution functions
+library(stats)
+
+# Average rate of visits (λ)
+lambda <- 15
+
+# (a) Probability that at least 10 minutes will elapse without a visit
+# Convert 10 minutes to a fraction of an hour
+time_10_minutes <- 10 / 60
+prob_a <- ppois(0, lambda * time_10_minutes)
+cat("Probability (a):", prob_a, "\n")
+
+# (b) Probability that in any hour, there will be less than eight visits
+prob_b <- ppois(7, lambda)
+cat("Probability (b):", prob_b, "\n")
+
+# (c) Probability that a visit will occur in the next 15 minutes given 15 minutes have elapsed
+# Convert 15 minutes to a fraction of an hour
+time_15_minutes <- 15 / 60
+prob_c <- 1 - ppois(0, lambda * time_15_minutes)
+cat("Probability (c):", prob_c, "\n")
+
+# (d) Calculate the top quartile
+top_quartile <- qpois(0.75, lambda)
+cat("Top Quartile:", top_quartile, "\n")
+```
+
+### Interpretation
+
+  * For part (a), we calculate the probability that no visits will occur in the next 10 minutes using the Poisson distribution with a rate of λ * (10/60), where 10/60 represents 10 minutes as a fraction of an hour.
+  * For part (b), we use the ppois() function to calculate the probability that there will be fewer than 8 visits in an hour.
+  * For part (c), we calculate the probability that at least one visit will occur in the next 15 minutes given that 15 minutes have already elapsed using the complementary probability of no visits occurring in the next 15 minutes.
+  * For part (d), we use the qpois() function to calculate the value at which the cumulative distribution function (CDF) equals 0.75, which represents the top quartile of the distribution. This value represents the number of visits that separates the top 25% of the distribution from the rest.

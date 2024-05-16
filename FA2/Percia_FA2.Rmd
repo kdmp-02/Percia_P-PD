@@ -1,0 +1,125 @@
+---
+title: "Percia_FA2"
+output: html_document
+date: "2024-02-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Answered 3 even though only 1 is required.
+
+## Number 1
+
+Use R to illustrate that the probability of getting:
+
+(a) a head is 0.5 if a fair coin is tossed repeatedly;
+(b) a red card is 0.5 if cards are drawn repeatedly with replacement from awell-shuffled deck;
+(c) an even number is 0.5 if a fair die is rolled repeatedly.
+
+```{r cars}
+### NUMBER 1
+
+# Define the number of trials
+num_trials <- 1000
+
+# (a) Simulating coin toss
+coin_toss <- sample(c("Head", "Tail"), num_trials, replace = TRUE)
+prob_head <- mean(coin_toss == "Head")
+
+# (b) Simulating card drawing
+deck <- rep(c("Red", "Black"), times = 26)
+card_draw <- sample(deck, num_trials, replace = TRUE)
+prob_red <- mean(card_draw == "Red")
+
+# (c) Simulating die rolling
+die_roll <- sample(1:6, num_trials, replace = TRUE)
+prob_even <- mean(die_roll %% 2 == 0)
+
+cat("(a) Probability of getting a head in coin toss:", prob_head, "\n")
+cat("(b) Probability of drawing a red card:", prob_red, "\n")
+cat("(c) Probability of getting an even number in die roll:", prob_even, "\n")
+```
+
+### Interpretation:
+
+(a) Probability of Getting a head
+
+  * In the simulated experiment, the probability of getting a head in a fair coin toss was found to be approximately 0.5.
+  * This result indicates that, on average, half of the tosses resulted in heads, which aligns with the theoretical probability for a fair coin.
+  * The interpretation suggests that when a fair coin is tossed repeatedly, there's an equal likelihood of getting a head or a tail.
+  
+(b) Probability of Drawing a Red Card
+
+  * From the simulation of drawing cards repeatedly with replacement from a well-shuffled deck, the probability of drawing a red card was approximately 0.5.
+  * This finding implies that each time a card is drawn, there's an equal chance of getting a red card or a black card, assuming the deck is well-shuffled and has equal numbers of red and black cards.
+
+(c) Probability of Rolling an Even Number
+  * In the experiment of rolling a fair die repeatedly, the probability of rolling an even number was approximately 0.5.
+  * This result indicates that when a fair die is rolled repeatedly, there's an equal chance of getting an even number (2, 4, or 6) or an odd number (1, 3, or 5).
+
+## Number 2
+
+An experiment consists of tossing two fair coins. Use R to simulate this experiment 100 times and obtain the relative frequency of each possible outcome. Hence, estimate the probability of getting one head and one tail in any order.
+
+``` {r}
+### NUMBER 2
+
+# Simulate 100 times
+num_experiments <- 100
+coin_outcomes <- replicate(num_experiments, {
+  tosses <- sample(c("H", "T"), 2, replace = TRUE)
+  paste(sort(tosses), collapse = "")
+})
+# Count the frequency of each outcome
+outcome_counts <- table(coin_outcomes)
+# Calculate the relative frequency
+relative_freq <- prop.table(outcome_counts)
+relative_freq
+```
+
+### Interpretation
+
+Outcome Analysis for Tossing Two Fair Coins:
+
+  * The relative frequency of each possible outcome (HH, HT, TH, TT) was calculated based on 100 simulations.
+
+  * To estimate the probability of getting one head and one tail in any order, we observed the frequencies of outcomes HT and TH.
+
+  * Interpretation per Outcome:
+
+    * HT and TH outcomes represent situations where one coin shows heads and the other shows tails.
+    * The relative frequency of these outcomes provides an estimate of the probability of getting one head and one tail in any order when tossing two fair coins.
+
+## Number 3
+
+An experiment consists of rolling a die. Use R to simulate this experiment 600 times and obtain the relative frequency of each possible outcome. Hence, estimate the probability of getting each of 1, 2, 3, 4, 5, and 6.
+
+``` {r}
+
+### NUMBER 3
+
+# Simulate 600 times
+num_experiments <- 600
+die_outcomes <- sample(1:6, num_experiments, replace = TRUE)
+# Count the frequency of each outcome
+outcome_counts <- table(die_outcomes)
+# Calculate the relative frequency
+relative_freq <- prop.table(outcome_counts)
+relative_freq
+```
+
+### Interpretation
+
+Outcome Analysis for Rolling a Fair Die:
+
+  * The relative frequency of each possible outcome (1 to 6) was obtained from 600 simulations.
+
+  * These frequencies were used to estimate the probability of rolling each number (1 to 6).
+
+  * Interpretation per Number:
+
+    * Each number (1 to 6) corresponds to the outcome of rolling a fair six-sided die.
+    * The relative frequency of each number represents the likelihood of rolling that specific number.
+    * The interpretation per number provides insights into the fairness and randomness of the die rolls, indicating whether each face of the die has an equal chance of appearing.

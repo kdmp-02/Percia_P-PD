@@ -1,0 +1,90 @@
+---
+title: "Percia_FA4"
+output: html_document
+date: "2024-03-04"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Number 5
+
+A geospatial analysis system has four sensors supplying images. The percentage of images supplied by each sensor and the percentage of images relevant to a query are shown in the following table.
+
+```{r table2, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+tabl <- "
+| Sensor | Percentage of Images Supplied | Percentage of Relevant Images |
+|:------:|:-----------------------------:|:-----------------------------:|
+| 1      | 15                            | 50                            |
+| 2      | 20                            | 60                            |
+| 3      | 25                            | 80                            |
+| 4      | 40                            | 85                            |
+"
+cat(tabl) # output the table in a format good for HTML/PDF/docx conversion
+```
+
+What is the overall percentage of relevant images?
+
+```{r}
+## NUMBER 5
+
+# Define the percentages
+percentages <- c(15, 20, 25, 40)
+relevant_percentages <- c(50, 60, 80, 85)
+
+# Calculate the weighted average of relevant images
+overall_relevant_percentage <- sum(percentages * relevant_percentages) / sum(percentages)
+overall_relevant_percentage
+```
+
+### Interpretation:
+
+The overall percentage of relevant images is calculated by considering the percentage of images supplied by each sensor and their respective percentages of relevant images. This calculation provides an insight into the effectiveness of the sensors in capturing relevant images for a given query.
+
+In this case, the overall percentage of relevant images is found to be 71.75%. This means that, on average, approximately 71.75% of the images obtained from the sensors are relevant to the query being analyzed. This information is valuable for assessing the performance of the geospatial analysis system and identifying areas for improvement in image selection and retrieval processes.
+
+## Number 6
+
++ A fair coin is tossed twice.
+  + Let E_1 be the event that both tosses have the same outcome, that is, E_1 = (HH, TT).
+  + Let E_2 be the event that the first toss is a head, that is, E_2 = (HH, HT).
+  + Let E_3 be the event that the second toss is a head, that is, E_3 = (TH, HH).
++ Show that E_1, E_2, and E_3 are pairwise independent but not mutually independent.
+
+``` {r}
+## NUMBER 6
+
+# Simulate tossing a fair coin twice
+num_trials <- 10000
+coin_tosses <- replicate(num_trials, sample(c("H", "T"), 2, replace = TRUE))
+
+# Define the events
+E_1 <- apply(coin_tosses, 2, function(x) all(x == "H" | x == "T"))
+E_2 <- apply(coin_tosses, 2, function(x) x[1] == "H")
+E_3 <- apply(coin_tosses, 2, function(x) x[2] == "H")
+
+# Check pairwise independence
+pairwise_independence <- all(cor(cbind(E_1, E_2, E_3)) == 0)
+pairwise_independence
+
+# Calculate the probabilities of individual events
+prob_E_1 <- mean(E_1)
+prob_E_2 <- mean(E_2)
+prob_E_3 <- mean(E_3)
+
+# Calculate the joint probability of all three events
+joint_prob <- mean(E_1 & E_2 & E_3)
+
+# Check for mutual independence
+mutually_independence <- joint_prob == prob_E_1 * prob_E_2 * prob_E_3
+mutually_independence
+```
+
+### Interpretation
+
+The concept of independence among events E_1, E_2, and E_3 in the context of tossing a fair coin twice is examined. Pairwise independence means that any two events are independent of each other, while mutual independence implies that all events are independent of each other.
+
+Upon analysis, it is found that events E_1 (both tosses have the same outcome), E_2 (the first toss is a head), and E_3 (the second toss is a head) are pairwise independent. This indicates that knowing the outcome of one event does not influence the probability of another event occurring.
+
+However, it is also observed that these events are not mutually independent. Specifically, the joint probability of all three events occurring does not equal the product of their individual probabilities. This suggests that while any two events may be independent, the occurrence of one event can still impact the likelihood of another event happening, violating the principle of mutual independence.

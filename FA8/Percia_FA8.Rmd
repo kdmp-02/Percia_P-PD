@@ -1,0 +1,124 @@
+---
+title: "Percia_FA8"
+output: html_document
+date: "2024-04-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Number 1
+
+An analogue signal received at a detector, measured in microvolts, is normally distributed with mean of 200 and variance of 256.
+
+(a) What is the probability that the signal will exceed 224 μV?
+(b) What is the probability that it will be between 186 and 224 μV?
+(c) What is the micro voltage below which 25% of the signals will be?
+(d) What is the probability that the signal will be less than 240 μV, given that it is larger than 210 μV?
+(e) Estimate the interquartile range.
+(f) What is the probability that the signal will be less than 220 μV, given that it is larger than 210 μV?
+(g) If we know that a received signal is greater that 200 μV, what is the probability that is in fact greater than 220 μV?
+
+```{r}
+## NUMBER 1
+
+# Load the stats package for normal distribution functions
+library(stats)
+
+# Mean and variance of the normal distribution
+mean <- 200
+variance <- 256
+
+# Standard deviation
+sd <- sqrt(variance)
+
+# (a) Probability that the signal will exceed 224 μV
+prob_a <- 1 - pnorm(224, mean, sd)
+cat("Probability (a):", prob_a, "\n")
+
+# (b) Probability that the signal will be between 186 and 224 μV
+prob_b <- pnorm(224, mean, sd) - pnorm(186, mean, sd)
+cat("Probability (b):", prob_b, "\n")
+
+# (c) Microvoltage below which 25% of the signals will be
+quantile_c <- qnorm(0.25, mean, sd)
+cat("Microvoltage for (c):", quantile_c, "\n")
+
+# (d) Probability that the signal will be less than 240 μV, given that it is larger than 210 μV
+prob_d <- (pnorm(240, mean, sd) - pnorm(210, mean, sd)) / (1 - pnorm(210, mean, sd))
+cat("Probability (d):", prob_d, "\n")
+
+# (e) Estimate the interquartile range
+quantile_25 <- qnorm(0.25, mean, sd)
+quantile_75 <- qnorm(0.75, mean, sd)
+interquartile_range <- quantile_75 - quantile_25
+cat("Interquartile Range:", interquartile_range, "\n")
+
+# (f) Probability that the signal will be less than 220 μV, given that it is larger than 210 μV
+prob_f <- (pnorm(220, mean, sd) - pnorm(210, mean, sd)) / (1 - pnorm(210, mean, sd))
+cat("Probability (f):", prob_f, "\n")
+
+# (g) Probability that the signal is greater than 220 μV given that it is greater than 200 μV
+prob_g <- (pnorm(220, mean, sd) - pnorm(200, mean, sd)) / (1 - pnorm(200, mean, sd))
+cat("Probability (g):", prob_g, "\n")
+```
+
+### Explanation of Code:
+
+ * For parts (a) and (b), we use the pnorm() function to calculate the probabilities for the given intervals.
+  * For part (c), we use the qnorm() function to calculate the microvoltage below which 25% of the signals will be.
+  * For part (d), we calculate the conditional probability using the definition of conditional probability.
+  * For part (e), we use the qnorm() function to calculate the 25th and 75th percentiles, then subtract to find the interquartile range.
+  * For parts (f) and (g), we use the definition of conditional probability to calculate the probabilities.
+
+
+
+## Number 2
+
+A manufacturer of a particular type of computer system is interested in improving its customer support services. As a first step, its marketing department has been charged with the responsibility of summarizing the extent of customer problems in terms of system failures. Over a period of six months, customers were surveyed and the amount of downtime (in minutes) due to system failures they had experienced during the previous month was collected. The average downtime was found to be 25 minutes and a variance of 144. If it can be assumed that downtime is normally distributed:
+
+
+(a) obtain bounds which will include 95% of the downtime of all the customers;
+(b) obtain the bound above which 10% of the downtime is included.
+
+Solution:
+
++ To solve these problems, we can use the normal distribution and Z-scores. Since we're dealing with downtime, which is normally distributed with a known mean and variance, we can calculate the bounds using the Z-score table.
+
++ Given:
+
+  + Mean (μ) = 25 minutes
+  + Variance (σ^2) = 144 minutes^2
+  + Standard deviation (σ) = sqrt(144) = 12 minutes
+  + We use the Z-score formula: Z = (X - μ) / σ
+
++ Where:
+
+  + X is the downtime value (in minutes)
+  + μ is the mean downtime (25 minutes)
+  + σ is the standard deviation (12 minutes)
+  + Then, we can use the Z-score table or R's qnorm() function to find the Z-score corresponding to the desired percentiles.
+
+```{r}
+
+## NUMBER 2
+
+# Mean and standard deviation
+mean <- 25
+sd <- sqrt(144)
+
+# (a) Bounds which will include 95% of the downtime of all the customers
+lower_bound_95 <- qnorm(0.025, mean, sd)
+upper_bound_95 <- qnorm(0.975, mean, sd)
+cat("Bounds (95%):", lower_bound_95, "-", upper_bound_95, "\n")
+
+# (b) Bound above which 10% of the downtime is included
+upper_bound_10 <- qnorm(0.90, mean, sd)
+cat("Upper Bound (10%):", upper_bound_10, "\n")
+```
+
+### Explanation of Code:
+
+  * For part (a), we find the Z-scores corresponding to the 2.5th and 97.5th percentiles using the qnorm() function. These Z-scores represent the bounds within which 95% of the downtime lies.
+  * For part (b), we find the Z-score corresponding to the 90th percentile, which represents the upper bound above which 10% of the downtime is included.
